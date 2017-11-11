@@ -50,11 +50,17 @@ import static android.opengl.GLES20.glLinkProgram;
 import static android.opengl.GLES20.glShaderSource;
 import static android.opengl.GLES20.glTexParameteri;
 import static android.opengl.GLES20.glUniform1i;
+import static android.opengl.GLES20.glUniform4f;
 import static android.opengl.GLES20.glUniformMatrix4fv;
 import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glVertexAttribPointer;
 import static android.opengl.GLES20.glViewport;
 import static android.opengl.GLUtils.texImage2D;
+import static android.opengl.Matrix.multiplyMM;
+import static android.opengl.Matrix.orthoM;
+import static android.opengl.Matrix.rotateM;
+import static android.opengl.Matrix.setIdentityM;
+import static android.opengl.Matrix.translateM;
 import static wxplus.opengles2forandroid.utils.Constants.BYTES_PER_FLOAT;
 
 /**
@@ -91,11 +97,11 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
     protected float[] mVertexArray = new float[] { // OpenGL的坐标是[-1, 1]，这里的Vertex正好定义了一个居中的正方形
             // Triangle Fan x, y, s, t
             0f,    0f, 0.5f, 0.5f,
-            -1f, -1f,   0f, 1f,
-            1f, -1f,   1f, 1f,
-            1f,  1f,   1f, 0f,
-            -1f,  1f,   0f, 0f,
-            -1f, -1f,   0f, 1f
+            -0.5f, -0.5f,   0f, 1f,
+            0.5f, -0.5f,   1f, 1f,
+            0.5f,  0.5f,   1f, 0f,
+            -0.5f,  0.5f,   0f, 0f,
+            -0.5f, -0.5f,   0f, 1f
     };
     protected FloatBuffer mVertexBuffer;
     protected float[] mProjectionMatrix = new float[16];
@@ -169,9 +175,10 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
             glViewport(0, 0, width, height);
-            // 正交变换，只考虑竖屏的情况
-            float rate = height * 1.0f / width;
-            Matrix.orthoM(mProjectionMatrix, 0, -1, 1, -rate, rate, -1, 1); // 正交变换，防止界面拉伸
+            // 正交投影
+            float rate = (float) height / width;
+            orthoM(mProjectionMatrix, 0, -1, 1, -rate, rate, -1, 1);
+            // 赋值
             glUniformMatrix4fv(uMatrixLocation, 1, false, mProjectionMatrix, 0);
         }
 
