@@ -19,6 +19,11 @@
             style="@style/MainPageTvStyle"
             android:text="Simple Texture"/>
 
+        <TextView
+            android:onClick="click_perspective_projection"
+            style="@style/MainPageTvStyle"
+            android:text="Perspective Projection"/>
+
     </LinearLayout>
 
 </ScrollView>

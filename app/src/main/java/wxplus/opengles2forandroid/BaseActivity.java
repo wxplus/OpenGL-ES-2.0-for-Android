@@ -18,6 +18,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = this;
+        setTitle(getClass().getSimpleName());
     }
 
     public void startActivity(Class cls) {

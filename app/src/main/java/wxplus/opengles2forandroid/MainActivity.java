@@ -19,4 +19,7 @@ public class MainActivity extends BaseActivity {
     public void click_simple_texture(View view) {
         startActivity(OpenGL_02_Simple_Texture.class);
     }
+    public void click_perspective_projection(View view) {
+        startActivity(OpenGL_03_Perspective_Projection.class);
+    }
 }

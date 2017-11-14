@@ -19,6 +19,7 @@
 
         <activity android:name=".OpenGL_01_Simple_Color"/>
         <activity android:name=".OpenGL_02_Simple_Texture"/>
+        <activity android:name=".OpenGL_03_Perspective_Projection"/>
     </application>
 
 </manifest>
