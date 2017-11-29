@@ -20,9 +20,9 @@
             android:text="Simple Texture"/>
 
         <TextView
-            android:onClick="click_perspective_projection"
+            android:onClick="click_simple_object"
             style="@style/MainPageTvStyle"
-            android:text="Perspective Projection"/>
+            android:text="Simple Object"/>
 
     </LinearLayout>
 

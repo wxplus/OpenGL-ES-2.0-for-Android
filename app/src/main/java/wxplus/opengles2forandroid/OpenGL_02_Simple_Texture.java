@@ -17,7 +17,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import wxplus.opengles2forandroid.utils.CommonUtils;
+import wxplus.opengles2forandroid.utils.TextureUtils;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_COMPILE_STATUS;
@@ -95,15 +95,24 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
     }
 
     protected float[] mVertexArray = new float[] { // OpenGL的坐标是[-1, 1]，这里的Vertex正好定义了一个居中的正方形
-            // Triangle Fan x, y, s, t
-            0f,    0f, 0.5f, 0.5f,
-            -0.5f, -0.5f,   0f, 1f,
-            0.5f, -0.5f,   1f, 1f,
-            0.5f,  0.5f,   1f, 0f,
-            -0.5f,  0.5f,   0f, 0f,
-            -0.5f, -0.5f,   0f, 1f
+            // Triangle Fan x, y
+            0f,    0f,
+            -0.5f, -0.5f,
+            0.5f, -0.5f,
+            0.5f,  0.5f,
+            -0.5f,  0.5f,
+            -0.5f, -0.5f
+    };
+    protected float[] mTextureArray = new float[] {
+            0.5f, 0.5f,
+            0f, 1f,
+            1f, 1f,
+            1f, 0f,
+            0f, 0f,
+            0f, 1f
     };
     protected FloatBuffer mVertexBuffer;
+    protected FloatBuffer mTextureBuffer;
     protected float[] mProjectionMatrix = new float[16];
 
     protected int textureId;
@@ -123,8 +132,12 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
                     .put(mVertexArray);
-            String vertexShaderStr = CommonUtils.readStrFromResource(mActivity, R.raw.opengl_02_simple_texture_vertex_shader);
-            String fragmentShaderStr = CommonUtils.readStrFromResource(mActivity, R.raw.opengl_02_simple_texture_fragment_shader);
+            mTextureBuffer = ByteBuffer.allocateDirect(mTextureArray.length * BYTES_PER_FLOAT)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer()
+                    .put(mTextureArray);
+            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_02_simple_texture_vertex_shader);
+            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_02_simple_texture_fragment_shader);
             // 创建Shader
             final int vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
             final int fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
@@ -165,10 +178,10 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
             glUniform1i(uTextureUnitLocation, 0);
             // 填充数据
             mVertexBuffer.position(0);
-            glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 4 * BYTES_PER_FLOAT, mVertexBuffer);
+            glVertexAttribPointer(aPositionLocation, 2, GL_FLOAT, false, 0, mVertexBuffer);
             glEnableVertexAttribArray(aPositionLocation);
-            mVertexBuffer.position(2);
-            glVertexAttribPointer(aTextureCoordinatesLocation, 2, GL_FLOAT, false, 4 * BYTES_PER_FLOAT, mVertexBuffer);
+            mTextureBuffer.position(0);
+            glVertexAttribPointer(aTextureCoordinatesLocation, 2, GL_FLOAT, false, 0, mTextureBuffer);
             glEnableVertexAttribArray(aTextureCoordinatesLocation);
         }
 

@@ -15,7 +15,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import wxplus.opengles2forandroid.utils.CommonUtils;
+import wxplus.opengles2forandroid.utils.TextureUtils;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
 import static android.opengl.GLES20.GL_COMPILE_STATUS;
@@ -100,8 +100,8 @@ public class OpenGL_01_Simple_Color extends BaseActivity {
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
                     .put(mVertexArray);
-            String vertexShaderStr = CommonUtils.readStrFromResource(mActivity, R.raw.opengl_01_simple_color_vertex_shader);
-            String fragmentShaderStr = CommonUtils.readStrFromResource(mActivity, R.raw.opengl_01_simple_color_fragment_shader);
+            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_01_simple_color_vertex_shader);
+            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_01_simple_color_fragment_shader);
             // 创建Shader
             final int vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
             final int fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);

@@ -9,6 +9,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // test
+        click_simple_object(null);
     }
 
 
@@ -19,7 +21,7 @@ public class MainActivity extends BaseActivity {
     public void click_simple_texture(View view) {
         startActivity(OpenGL_02_Simple_Texture.class);
     }
-    public void click_perspective_projection(View view) {
-        startActivity(OpenGL_03_Perspective_Projection.class);
+    public void click_simple_object(View view) {
+        startActivity(OpenGL_03_Simple_Object.class);
     }
 }
