@@ -21,6 +21,6 @@
 
 未遇到问题
 
-## OpenGL_03_Perspective_Projection
+## OpenGL_03_Simple_Object
 
 未遇到问题
