@@ -9,6 +9,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import wxplus.opengles2forandroid.obj.Puck;
 import wxplus.opengles2forandroid.obj.Table;
+import wxplus.opengles2forandroid.obj.base.Mallet;
 import wxplus.opengles2forandroid.obj.base.Point;
 import wxplus.opengles2forandroid.programs.ColorShaderProgram;
 import wxplus.opengles2forandroid.programs.TextureShaderProgram;
@@ -58,6 +59,8 @@ public class OpenGL_03_Simple_Object extends BaseActivity {
 
     protected Table mTable;
     protected Puck mPuck;
+    protected Mallet mTopMallet;
+    protected Mallet mBottomMallet;
 
     public class SimpleColorRenderer implements GLSurfaceView.Renderer {
 
@@ -78,11 +81,14 @@ public class OpenGL_03_Simple_Object extends BaseActivity {
             Matrix.perspectiveM(mProjectionMatrix, 0, sFovy, screenAspect, 1f, 10f);
             setIdentityM(mViewMatrix, 0);
             translateM(mViewMatrix, 0, 0, 0, -sZ);
+            rotateM(mViewMatrix, 0, -60, 1f, 0f, 0f);
             // Multiply the view and projection matrices together.
             multiplyMM(mProjectionViewMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
             // 初始化Objects
             mTable = new Table(new Point(0, 0, 0), sZ * screenAspect / focalLength, sZ / focalLength);
-            mPuck = new Puck(new Point(0, 0, 0), 0.3f, 0.5f, 100);
+            mPuck = new Puck(new Point(0, 0, 0), 0.1f, 0.1f, 100);
+            mTopMallet = new Mallet(new Point(0f, 0f, 0f), 0.05f, 0.1f, 0.1f, 0.05f, 100, 100);
+            mBottomMallet = new Mallet(new Point(0f, 0f, 0f), 0.05f, 0.1f, 0.1f, 0.05f, 100, 100);
         }
 
         @Override
@@ -94,29 +100,39 @@ public class OpenGL_03_Simple_Object extends BaseActivity {
             mTable.draw();
             // 绘制Puck
             positionPuckInScene();
-            mColorProgram.bindData(mProjectionViewModelMatrix, mPuck, 0.6f, 0.6f, 0.6f);
+            mColorProgram.bindData(mProjectionViewModelMatrix, mPuck, 1f, 0f, 0f);
             mPuck.draw();
+            // top mallet
+            positionTopMalletInScene();
+            mColorProgram.bindData(mProjectionViewModelMatrix, mTopMallet, 0, 1f, 0);
+            mTopMallet.draw();
+            // bottom mallet
+            positionBottomMalletInScene();
+            mColorProgram.bindData(mProjectionViewModelMatrix, mBottomMallet, 0, 0, 1f);
+            mBottomMallet.draw();
         }
     }
 
     protected void positionTableInScene() {
         setIdentityM(mModelMatrix, 0);
-//        rotateM(mModelMatrix, 0, -30, 1f, 0, 0); // 围绕x轴旋转30度
         multiplyMM(mProjectionViewModelMatrix, 0, mProjectionViewMatrix, 0, mModelMatrix, 0);
     }
 
     protected void positionPuckInScene() {
         setIdentityM(mModelMatrix, 0);
+        translateM(mModelMatrix, 0, 0, 0, 0.05f);
         multiplyMM(mProjectionViewModelMatrix, 0, mProjectionViewMatrix, 0, mModelMatrix, 0);
     }
 
     protected void positionTopMalletInScene() {
         setIdentityM(mModelMatrix, 0);
+        translateM(mModelMatrix, 0, 0, 0.5f, 0.05f);
         multiplyMM(mProjectionViewModelMatrix, 0, mProjectionViewMatrix, 0, mModelMatrix, 0);
     }
 
     protected void positionBottomMalletInScene() {
         setIdentityM(mModelMatrix, 0);
+        translateM(mModelMatrix, 0, 0, -0.5f, 0.05f);
         multiplyMM(mProjectionViewModelMatrix, 0, mProjectionViewMatrix, 0, mModelMatrix, 0);
     }
 

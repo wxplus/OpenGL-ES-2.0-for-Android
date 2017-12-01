@@ -9,8 +9,10 @@ import java.util.List;
 import wxplus.opengles2forandroid.obj.base.Circle;
 import wxplus.opengles2forandroid.obj.base.Cylinder;
 import wxplus.opengles2forandroid.obj.base.Square;
+import wxplus.opengles2forandroid.utils.GlobalConfig;
 
 import static android.opengl.GLES20.GL_TRIANGLE_FAN;
+import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
 import static android.opengl.GLES20.glDrawArrays;
 import static wxplus.opengles2forandroid.utils.Constants.BYTES_PER_FLOAT;
 import static wxplus.opengles2forandroid.utils.Constants.FLOATS_PER_VERTEX;
@@ -24,6 +26,7 @@ import static wxplus.opengles2forandroid.utils.Constants.VERTEX_COUNT_SQUARE;
  */
 
 public class Object {
+    public static final String TAG = Object.class.getSimpleName();
 
     protected FloatBuffer mVertexBuffer;
     protected float[] vertexData;
@@ -87,6 +90,9 @@ public class Object {
         final int startVertex = offset / FLOATS_PER_VERTEX;
         final int vertexCount = sizeOfCircleInVertex(pointCount);
         if (vertexData == null || vertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
+            if (GlobalConfig.DEBUG) {
+                throw new IndexOutOfBoundsException(TAG + ", addCircle, vertexData is not big enough");
+            }
             return this;
         }
         // 先确定圆心的坐标
@@ -113,28 +119,31 @@ public class Object {
         final int startVertex = offset / FLOATS_PER_VERTEX;
         final int vertexCount = sizeOfCylinderInVertex(pointCount);
         if (vertexData == null || vertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
+            if (GlobalConfig.DEBUG) {
+                throw new IndexOutOfBoundsException(TAG + ", addOpenCylinder, vertexData is not big enough");
+            }
             return this;
         }
-        float topY = cylinder.center.y + cylinder.height / 2;
-        float bottomY = cylinder.center.y - cylinder.height / 2;
+        float topZ = cylinder.center.z + cylinder.height / 2;
+        float bottomZ = cylinder.center.z - cylinder.height / 2;
         float radian = (float) (2 * Math.PI / pointCount); // 先计算出每一份的弧度值
         // 依次赋值
-        for (int i = 0; i <= vertexCount; i++) {
+        for (int i = 0; i <= pointCount; i++) {
             float x = cylinder.center.x + cylinder.radius * (float) Math.cos(i + radian);
-            float z = cylinder.center.z + cylinder.radius * (float) Math.sin(i + radian);
+            float y = cylinder.center.y + cylinder.radius * (float) Math.sin(i + radian);
             // top
             vertexData[offset++] = x;
-            vertexData[offset++] = topY;
-            vertexData[offset++] = z;
+            vertexData[offset++] = y;
+            vertexData[offset++] = topZ;
             // bottom
             vertexData[offset++] = x;
-            vertexData[offset++] = bottomY;
-            vertexData[offset++] = z;
+            vertexData[offset++] = y;
+            vertexData[offset++] = bottomZ;
         }
         drawTaskList.add(new DrawTask() {
             @Override
             public void draw() {
-                glDrawArrays(GL_TRIANGLE_FAN, startVertex, vertexCount);
+                glDrawArrays(GL_TRIANGLE_STRIP, startVertex, vertexCount);
             }
         });
         return this;
@@ -176,6 +185,10 @@ public class Object {
 
     public int sizeOfCylinderInVertex(int pointCount) {
         return (pointCount + 1) * 2;
+    }
+
+    public int floatSizeOfVertexs(int vertexCount) {
+        return FLOATS_PER_VERTEX * vertexCount;
     }
 
     public interface DrawTask {
