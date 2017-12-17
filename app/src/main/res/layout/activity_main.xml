@@ -12,22 +12,27 @@
         <TextView
             android:onClick="click_simple_color"
             style="@style/MainPageTvStyle"
-            android:text="Simple Color"/>
+            android:text="OpenGL_01_Simple_Color"/>
 
         <TextView
             android:onClick="click_simple_texture"
             style="@style/MainPageTvStyle"
-            android:text="Simple Texture"/>
+            android:text="OpenGL_02_Simple_Texture"/>
 
         <TextView
             android:onClick="click_simple_object"
             style="@style/MainPageTvStyle"
-            android:text="Simple Object"/>
+            android:text="OpenGL_03_Simple_Object"/>
 
         <TextView
             android:onClick="click_sky_box"
             style="@style/MainPageTvStyle"
-            android:text="SkyBox"/>
+            android:text="OpenGL_04_Skybox"/>
+
+        <TextView
+            android:onClick="click_height_map"
+            style="@style/MainPageTvStyle"
+            android:text="OpenGL_05_HeightMap"/>
 
     </LinearLayout>
 

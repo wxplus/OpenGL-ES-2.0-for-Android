@@ -8,9 +8,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle(R.string.app_name);
         setContentView(R.layout.activity_main);
         // test
-        click_sky_box(null);
+        click_height_map(null);
     }
 
 
@@ -26,5 +27,8 @@ public class MainActivity extends BaseActivity {
     }
     public void click_sky_box(View view) {
         startActivity(OpenGL_04_Skybox.class);
+    }
+    public void click_height_map(View view) {
+        startActivity(OpenGL_05_HeightMap.class);
     }
 }

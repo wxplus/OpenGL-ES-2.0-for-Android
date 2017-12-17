@@ -57,7 +57,7 @@ public class OpenGL_01_Simple_Color extends BaseActivity {
         mGlView = new GLSurfaceView(this);
         // Request an OpenGL ES 2.0 compatible context.
         mGlView.setEGLContextClientVersion(2);
-        mGlView.setRenderer(new SimpleColorRenderer());
+        mGlView.setRenderer(new CusRenderer());
         // Check if the system supports OpenGL ES 2.0.
         ActivityManager activityManager =
                 (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -90,7 +90,7 @@ public class OpenGL_01_Simple_Color extends BaseActivity {
     protected int aPositionLocation;
     protected int uColorLocation;
 
-    public class  SimpleColorRenderer implements GLSurfaceView.Renderer {
+    public class  CusRenderer implements GLSurfaceView.Renderer {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

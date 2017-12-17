@@ -42,7 +42,7 @@ public class OpenGL_03_Simple_Object extends BaseActivity {
         mGlView = new GLSurfaceView(this);
         // Request an OpenGL ES 2.0 compatible context.
         mGlView.setEGLContextClientVersion(2);
-        mGlView.setRenderer(new SimpleColorRenderer());
+        mGlView.setRenderer(new CusRenderer());
         setContentView(mGlView);
     }
 
@@ -62,7 +62,7 @@ public class OpenGL_03_Simple_Object extends BaseActivity {
     protected Mallet mTopMallet;
     protected Mallet mBottomMallet;
 
-    public class SimpleColorRenderer implements GLSurfaceView.Renderer {
+    public class CusRenderer implements GLSurfaceView.Renderer {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

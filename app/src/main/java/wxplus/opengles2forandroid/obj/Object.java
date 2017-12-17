@@ -3,6 +3,7 @@ package wxplus.opengles2forandroid.obj;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import static android.opengl.GLES20.GL_TRIANGLE_FAN;
 import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
 import static android.opengl.GLES20.glDrawArrays;
 import static wxplus.opengles2forandroid.utils.Constants.BYTES_PER_FLOAT;
+import static wxplus.opengles2forandroid.utils.Constants.BYTES_PER_SHORT;
 import static wxplus.opengles2forandroid.utils.Constants.FLOATS_PER_VERTEX;
 import static wxplus.opengles2forandroid.utils.Constants.VERTEX_COUNT_SQUARE;
 
@@ -32,6 +34,9 @@ public class Object {
     protected FloatBuffer mVertexBuffer;
     protected float[] mVertexData;
     protected int offset = 0;
+
+    protected ShortBuffer mIndexBuffer;
+    protected short[] mIndexData;
 
     protected FloatBuffer mTextureBuffer;
     protected static final float[] TEXTURE_DATA = {
@@ -172,6 +177,18 @@ public class Object {
         }
         mTextureBuffer.position(0);
         return mTextureBuffer;
+    }
+
+    public ShortBuffer getIndexBuffer() {
+        if (mIndexBuffer == null) {
+            mIndexBuffer = ByteBuffer
+                    .allocateDirect(mIndexData.length * BYTES_PER_SHORT)
+                    .order(ByteOrder.nativeOrder())
+                    .asShortBuffer()
+                    .put(mIndexData);
+        }
+        mIndexBuffer.position(0);
+        return mIndexBuffer;
     }
 
     public void draw() {

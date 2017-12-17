@@ -58,10 +58,6 @@ public abstract class ShaderProgram {
 
     }
 
-    public void useProgram() {
-        glUseProgram(program);
-    }
-
     /**
      * Loads and compiles a vertex shader, returning the OpenGL object ID.
      */

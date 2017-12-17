@@ -19,14 +19,14 @@
 2. glsl文件中没有删掉这行代码`#version 120`
 3. 在进行正交变换时，变换的Matrix没有进行Matrix.orithM初始化
 
-## OpenGL_02_Simple_Texture
+### OpenGL_02_Simple_Texture
 
 未遇到问题
 
-## OpenGL_03_Simple_Object
+### OpenGL_03_Simple_Object
 
 未遇到问题
 
-## OpenGL_04_Skybox
+### OpenGL_04_Skybox
 
 未遇到问题
