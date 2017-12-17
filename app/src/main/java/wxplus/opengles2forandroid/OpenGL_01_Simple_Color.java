@@ -100,8 +100,8 @@ public class OpenGL_01_Simple_Color extends BaseActivity {
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
                     .put(mVertexArray);
-            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_01_simple_color_vertex_shader);
-            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_01_simple_color_fragment_shader);
+            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.color_vertex_shader);
+            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.color_fragment_shader);
             // 创建Shader
             final int vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
             final int fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);

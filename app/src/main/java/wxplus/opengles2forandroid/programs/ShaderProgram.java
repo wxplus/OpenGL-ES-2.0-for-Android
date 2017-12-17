@@ -30,6 +30,7 @@ import static android.opengl.GLES20.glGetShaderInfoLog;
 import static android.opengl.GLES20.glGetShaderiv;
 import static android.opengl.GLES20.glLinkProgram;
 import static android.opengl.GLES20.glShaderSource;
+import static android.opengl.GLES20.glUseProgram;
 import static android.opengl.GLES20.glValidateProgram;
 
 public abstract class ShaderProgram {
@@ -46,7 +47,7 @@ public abstract class ShaderProgram {
     protected static final String A_TEXTURE_COORDINATES = "a_TextureCoordinates";
 
     // Shader program
-    protected final int program;
+    public final int program;
 
     protected ShaderProgram(Context context, int vertexShaderResourceId,
                             int fragmentShaderResourceId) {
@@ -55,6 +56,10 @@ public abstract class ShaderProgram {
                 TextureUtils.readShaderCodeFromResource(context, vertexShaderResourceId),
                 TextureUtils.readShaderCodeFromResource(context, fragmentShaderResourceId));
 
+    }
+
+    public void useProgram() {
+        glUseProgram(program);
     }
 
     /**

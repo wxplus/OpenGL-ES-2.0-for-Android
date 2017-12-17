@@ -136,8 +136,8 @@ public class OpenGL_02_Simple_Texture extends BaseActivity {
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
                     .put(mTextureArray);
-            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_02_simple_texture_vertex_shader);
-            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.opengl_02_simple_texture_fragment_shader);
+            String vertexShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.texture_vertex_shader);
+            String fragmentShaderStr = TextureUtils.readShaderCodeFromResource(mActivity, R.raw.texture_fragment_shader);
             // 创建Shader
             final int vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
             final int fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);

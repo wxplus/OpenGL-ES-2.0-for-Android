@@ -24,6 +24,11 @@
             style="@style/MainPageTvStyle"
             android:text="Simple Object"/>
 
+        <TextView
+            android:onClick="click_sky_box"
+            style="@style/MainPageTvStyle"
+            android:text="SkyBox"/>
+
     </LinearLayout>
 
 </ScrollView>

@@ -1,6 +1,5 @@
 package wxplus.opengles2forandroid.utils;
 
-import java.security.PublicKey;
 
 /**
  * Created by hi on 2017/10/29.

@@ -9,6 +9,7 @@ import java.util.List;
 import wxplus.opengles2forandroid.obj.base.Circle;
 import wxplus.opengles2forandroid.obj.base.Cylinder;
 import wxplus.opengles2forandroid.obj.base.Square;
+import wxplus.opengles2forandroid.programs.ShaderProgram;
 import wxplus.opengles2forandroid.utils.GlobalConfig;
 
 import static android.opengl.GLES20.GL_TRIANGLE_FAN;
@@ -29,7 +30,7 @@ public class Object {
     public static final String TAG = Object.class.getSimpleName();
 
     protected FloatBuffer mVertexBuffer;
-    protected float[] vertexData;
+    protected float[] mVertexData;
     protected int offset = 0;
 
     protected FloatBuffer mTextureBuffer;
@@ -50,33 +51,33 @@ public class Object {
     public Object addSquare(Square square) {
         final int startVertex = offset / FLOATS_PER_VERTEX;
         final int vertexCount = VERTEX_COUNT_SQUARE;
-        if (vertexData == null || vertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
+        if (mVertexData == null || mVertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
             return this;
         }
         // 先确定正方形中心的坐标
-        vertexData[offset++] = square.center.x;
-        vertexData[offset++] = square.center.y;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x;
+        mVertexData[offset++] = square.center.y;
+        mVertexData[offset++] = square.center.z;
         // 左下角
-        vertexData[offset++] = square.center.x - square.widht / 2;
-        vertexData[offset++] = square.center.y - square.height / 2;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x - square.widht / 2;
+        mVertexData[offset++] = square.center.y - square.height / 2;
+        mVertexData[offset++] = square.center.z;
         // 右下角
-        vertexData[offset++] = square.center.x + square.widht / 2;
-        vertexData[offset++] = square.center.y - square.height / 2;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x + square.widht / 2;
+        mVertexData[offset++] = square.center.y - square.height / 2;
+        mVertexData[offset++] = square.center.z;
         // 右上角
-        vertexData[offset++] = square.center.x + square.widht / 2;
-        vertexData[offset++] = square.center.y + square.height / 2;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x + square.widht / 2;
+        mVertexData[offset++] = square.center.y + square.height / 2;
+        mVertexData[offset++] = square.center.z;
         // 左上角
-        vertexData[offset++] = square.center.x - square.widht / 2;
-        vertexData[offset++] = square.center.y + square.height / 2;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x - square.widht / 2;
+        mVertexData[offset++] = square.center.y + square.height / 2;
+        mVertexData[offset++] = square.center.z;
         // 左下角(triangle fan)
-        vertexData[offset++] = square.center.x - square.widht / 2;
-        vertexData[offset++] = square.center.y - square.height / 2;
-        vertexData[offset++] = square.center.z;
+        mVertexData[offset++] = square.center.x - square.widht / 2;
+        mVertexData[offset++] = square.center.y - square.height / 2;
+        mVertexData[offset++] = square.center.z;
         drawTaskList.add(new DrawTask() {
             @Override
             public void draw() {
@@ -89,22 +90,22 @@ public class Object {
     public Object addCircle(Circle circle, int pointCount) {
         final int startVertex = offset / FLOATS_PER_VERTEX;
         final int vertexCount = sizeOfCircleInVertex(pointCount);
-        if (vertexData == null || vertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
+        if (mVertexData == null || mVertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
             if (GlobalConfig.DEBUG) {
-                throw new IndexOutOfBoundsException(TAG + ", addCircle, vertexData is not big enough");
+                throw new IndexOutOfBoundsException(TAG + ", addCircle, mVertexData is not big enough");
             }
             return this;
         }
         // 先确定圆心的坐标
-        vertexData[offset++] = circle.center.x;
-        vertexData[offset++] = circle.center.y;
-        vertexData[offset++] = circle.center.z;
+        mVertexData[offset++] = circle.center.x;
+        mVertexData[offset++] = circle.center.y;
+        mVertexData[offset++] = circle.center.z;
         // 循环赋值，确定圆上顶点的坐标(最后一个顶点赋值两次)
         float radian = (float) (2 * Math.PI / pointCount); // 先计算出每一份的弧度值
         for (int i = 0; i <= pointCount; i++) {
-            vertexData[offset++] = circle.center.x + circle.radius * (float) Math.cos(radian * i);
-            vertexData[offset++] = circle.center.y + circle.radius * (float) Math.sin(radian * i);
-            vertexData[offset++] = circle.center.z;
+            mVertexData[offset++] = circle.center.x + circle.radius * (float) Math.cos(radian * i);
+            mVertexData[offset++] = circle.center.y + circle.radius * (float) Math.sin(radian * i);
+            mVertexData[offset++] = circle.center.z;
         }
         drawTaskList.add(new DrawTask() {
             @Override
@@ -118,9 +119,9 @@ public class Object {
     public Object addOpenCylinder(Cylinder cylinder, int pointCount) {
         final int startVertex = offset / FLOATS_PER_VERTEX;
         final int vertexCount = sizeOfCylinderInVertex(pointCount);
-        if (vertexData == null || vertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
+        if (mVertexData == null || mVertexData.length - offset < vertexCount * FLOATS_PER_VERTEX) {
             if (GlobalConfig.DEBUG) {
-                throw new IndexOutOfBoundsException(TAG + ", addOpenCylinder, vertexData is not big enough");
+                throw new IndexOutOfBoundsException(TAG + ", addOpenCylinder, mVertexData is not big enough");
             }
             return this;
         }
@@ -132,13 +133,13 @@ public class Object {
             float x = cylinder.center.x + cylinder.radius * (float) Math.cos(i + radian);
             float y = cylinder.center.y + cylinder.radius * (float) Math.sin(i + radian);
             // top
-            vertexData[offset++] = x;
-            vertexData[offset++] = y;
-            vertexData[offset++] = topZ;
+            mVertexData[offset++] = x;
+            mVertexData[offset++] = y;
+            mVertexData[offset++] = topZ;
             // bottom
-            vertexData[offset++] = x;
-            vertexData[offset++] = y;
-            vertexData[offset++] = bottomZ;
+            mVertexData[offset++] = x;
+            mVertexData[offset++] = y;
+            mVertexData[offset++] = bottomZ;
         }
         drawTaskList.add(new DrawTask() {
             @Override
@@ -152,10 +153,10 @@ public class Object {
     public FloatBuffer getVertexBuffer() {
         if (mVertexBuffer == null) {
             mVertexBuffer = ByteBuffer
-                    .allocateDirect(vertexData.length * BYTES_PER_FLOAT)
+                    .allocateDirect(mVertexData.length * BYTES_PER_FLOAT)
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer()
-                    .put(vertexData);
+                    .put(mVertexData);
         }
         mVertexBuffer.position(0);
         return mVertexBuffer;

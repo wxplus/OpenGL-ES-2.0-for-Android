@@ -6,6 +6,8 @@
 
 - OpenGL_01_Simple_Color 实现最基本的绘制正方形
 - OpenGL_02_Simple_Texture 实现最基本的加载图片Texture
+- OpenGL_03_Simple_Object 将绘制的物体进行封装，涉及较多矩阵变换
+- OpenGL_04_Skybox 实现最基本的Skybox效果
 
 ## 项目开发问题记录
 
@@ -22,5 +24,9 @@
 未遇到问题
 
 ## OpenGL_03_Simple_Object
+
+未遇到问题
+
+## OpenGL_04_Skybox
 
 未遇到问题

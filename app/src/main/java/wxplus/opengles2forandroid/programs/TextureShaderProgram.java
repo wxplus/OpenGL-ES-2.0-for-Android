@@ -35,16 +35,16 @@ import static wxplus.opengles2forandroid.utils.Constants.FLOATS_PER_VERTEX;
 
 public class TextureShaderProgram extends ShaderProgram {    
     // Uniform locations
-    private final int uMatrixLocation;
-    private final int uTextureUnitLocation;
+    protected final int uMatrixLocation;
+    protected final int uTextureUnitLocation;
     
     // Attribute locations
-    private final int aPositionLocation;
-    private final int aTextureCoordinatesLocation;
+    protected final int aPositionLocation;
+    protected final int aTextureCoordinatesLocation;
 
     public TextureShaderProgram(Context context) {
-        super(context, R.raw.opengl_02_simple_texture_vertex_shader,
-            R.raw.opengl_02_simple_texture_fragment_shader);
+        super(context, R.raw.texture_vertex_shader,
+            R.raw.texture_fragment_shader);
 
         // Retrieve uniform locations for the shader program.
         uMatrixLocation = glGetUniformLocation(program, U_MATRIX);

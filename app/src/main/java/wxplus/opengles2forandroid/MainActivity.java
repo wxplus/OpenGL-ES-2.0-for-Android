@@ -10,7 +10,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // test
-        click_simple_object(null);
+        click_sky_box(null);
     }
 
 
@@ -23,5 +23,8 @@ public class MainActivity extends BaseActivity {
     }
     public void click_simple_object(View view) {
         startActivity(OpenGL_03_Simple_Object.class);
+    }
+    public void click_sky_box(View view) {
+        startActivity(OpenGL_04_Skybox.class);
     }
 }
