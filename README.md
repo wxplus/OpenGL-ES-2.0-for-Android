@@ -8,6 +8,7 @@
 - OpenGL_02_Simple_Texture 实现最基本的加载图片Texture
 - OpenGL_03_Simple_Object 将绘制的物体进行封装，涉及较多矩阵变换
 - OpenGL_04_Skybox 实现最基本的Skybox效果
+- OpenGL_05_HeightMap 读取并显示HeightMap，涉及更细致的MVP Matrix的使用。
 
 ## 项目开发问题记录
 
@@ -30,3 +31,7 @@
 ### OpenGL_04_Skybox
 
 未遇到问题
+
+### OpenGL_05_HeightMap
+
+在使用IndexBuffer时，数据类型为float时无法显示，改成short就行了，不知为何，后续再深入研究。
