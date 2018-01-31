@@ -17,9 +17,15 @@ import wxplus.opengles2forandroid.programs.SkyboxShaderProgram;
 import wxplus.opengles2forandroid.utils.TextureUtils;
 
 import static android.opengl.GLES20.GL_COLOR_BUFFER_BIT;
+import static android.opengl.GLES20.GL_CULL_FACE;
 import static android.opengl.GLES20.GL_DEPTH_BUFFER_BIT;
+import static android.opengl.GLES20.GL_DEPTH_TEST;
+import static android.opengl.GLES20.GL_LEQUAL;
+import static android.opengl.GLES20.GL_LESS;
 import static android.opengl.GLES20.glClear;
 import static android.opengl.GLES20.glClearColor;
+import static android.opengl.GLES20.glDepthFunc;
+import static android.opengl.GLES20.glEnable;
 import static android.opengl.GLES20.glViewport;
 import static android.opengl.Matrix.multiplyMM;
 import static android.opengl.Matrix.rotateM;
@@ -96,6 +102,8 @@ public class OpenGL_05_HeightMap extends BaseActivity {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            glEnable(GL_DEPTH_TEST);
+            glEnable(GL_CULL_FACE);
             glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
             mSkyboxProgram = new SkyboxShaderProgram(mActivity);
             mSkyboxTexture = TextureUtils.loadCubeMap(mActivity,
@@ -113,7 +121,7 @@ public class OpenGL_05_HeightMap extends BaseActivity {
             // Set the OpenGL viewport to fill the entire surface.
             glViewport(0, 0, width, height);
             float screenAspect = width * 1.0f / height;
-            Matrix.perspectiveM(mProjectionMatrix, 0, sFovy, screenAspect, 1f, 100f);
+            Matrix.perspectiveM(mProjectionMatrix, 0, sFovy, screenAspect, 0f, 100f);
             setIdentityM(mViewMatrix, 0);
         }
 
@@ -128,15 +136,18 @@ public class OpenGL_05_HeightMap extends BaseActivity {
             // Expand the heightmap's dimensions, but don't expand the height as
             // much so that we don't get insanely tall mountains.
             setIdentityM(mModelMatrix, 0);
-            translateM(mModelMatrix, 0, 0, -1.5f, -2f);
-            scaleM(mModelMatrix, 0, 100f, 10f, 100f);
+            translateM(mModelMatrix, 0, 0, -1.5f, -2f); // 向下移动点，让山脉的底部在屏幕下面，向远处移动一些，不然看不出啥东西，离得太近
+            scaleM(mModelMatrix, 0, 100f, 10f, 100f);  // 这里放大若干倍，形成环绕的效果，最少要在左右滑动的时候看不到边
             updateMvpMatrix();
             mHeightMapShaderProgram.bindData(mProjectionViewModelMatrix, mHeightMap);
+            glDepthFunc(GL_LEQUAL);
             mHeightMap.draw();
+            glDepthFunc(GL_LESS);
         }
 
         public void drawSkybox() {
             setIdentityM(mModelMatrix, 0);
+//            translateM(mModelMatrix, 0, 0, 0, -0);
             updateMvpMatrix();
             mSkyboxProgram.bindData(mProjectionViewModelMatrix, mSkyboxTexture, mSkybox);
             mSkybox.draw();
@@ -144,10 +155,17 @@ public class OpenGL_05_HeightMap extends BaseActivity {
 
         protected float xRotation, yRotation;
         public void handleTouchDrag(float deltaX, float deltaY) {
-            xRotation = deltaX / 16f;
-            yRotation = deltaY / 16f;
-            rotateM(mViewMatrix, 0, -xRotation, 0, 1f, 0);
-            rotateM(mViewMatrix, 0, -yRotation, 1f, 0, 0);
+            float x = deltaX / 16f;
+            float y = deltaY / 16f;
+            if (yRotation + y > 90) {
+                y = 90 - yRotation;
+            } else if (yRotation + y < -90) {
+                y = -90 - yRotation;
+            }
+            xRotation += x;
+            yRotation += y;
+            rotateM(mViewMatrix, 0, -x, 0, 1f, 0);
+            rotateM(mViewMatrix, 0, -y, 1f, 0, 0);
         }
     }
 
